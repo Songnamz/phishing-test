@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Logger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+    <div class="max-w-lg bg-white rounded-lg shadow-md p-6 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Click Logger</h1>
+
+        <p class="text-gray-600 text-lg mb-4">
+            You clicked this link. Learn why you should not click random links online.
+        </p>
+
+        <div id="stats" class="bg-blue-100 text-blue-800 text-lg font-semibold p-4 rounded-lg mb-4">
+            Loading stats...
+        </div>
+
+        <p class="text-gray-700 text-sm mb-4">
+            <strong>Why you should avoid random links:</strong>
+            <br>
+            - Links from unknown sources may contain malware or phishing scams.<br>
+            - Always verify links before clicking.<br>
+            - If unsure, don't click and report the suspicious link.
+        </p>
+
+        <a href="/learn-more.html" class="inline-block bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600">
+            Learn More About Online Safety
+        </a>
+    </div>
+
+    <script>
+        fetch('/api/log-click', { method: 'POST' });
+
+        // Fetch the stats from the backend
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                const statsDiv = document.getElementById('stats');
+                statsDiv.textContent = `${data.totalClicks} people have opened this link.`;
+            })
+            .catch(error => {
+                const statsDiv = document.getElementById('stats');
+                statsDiv.textContent = "Failed to load stats. Please try again later.";
+                console.error('Error fetching stats:', error);
+            });
+    </script>
+</body>
+</html>

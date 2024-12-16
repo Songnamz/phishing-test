@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oops, You Did It Again!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+    <div class="max-w-lg bg-white rounded-lg shadow-md p-6 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Oops, You Did It Again!</h1>
+
+        <p class="text-gray-600 text-lg mb-4">
+            You clicked a random link... again. Are you really sure you can resist next time? 😄
+        </p>
+
+        <div id="stats" class="bg-red-100 text-red-800 text-lg font-semibold p-4 rounded-lg mb-4">
+            Loading stats...
+        </div>
+
+        <p class="text-gray-700 text-sm mb-4">
+            Remember, clicking random links can sometimes lead to unwanted surprises. Be cautious!
+        </p>
+
+        <a href="/" class="inline-block bg-red-500 text-white py-2 px-4 rounded-lg shadow hover:bg-red-600">
+            Go Back to Safety
+        </a>
+    </div>
+
+    <script>
+        // Log click for the "Learn More" page
+        fetch('/api/log-click', { method: 'POST' });
+
+        // Fetch the stats again
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                const statsDiv = document.getElementById('stats');
+                statsDiv.textContent = `${data.totalClicks} total clicks recorded so far.`;
+            })
+            .catch(error => {
+                const statsDiv = document.getElementById('stats');
+                statsDiv.textContent = "Failed to load stats. Please try again later.";
+                console.error('Error fetching stats:', error);
+            });
+    </script>
+</body>
+</html>
